@@ -1,10 +1,10 @@
 $(document).ready( function() {
 
+var timer;
+var totalTime = 10000;
 var infoData;
 var dataLength;
-var tempStudent;
 var studentCounter = 0;
-var tempCounter = 0;
 
   $(function() {
 
@@ -13,9 +13,11 @@ var tempCounter = 0;
       dataType: 'json',
       success: function(data){
         console.log('AJAX loaded'); // confirms info has been loaded
-        studentInfo(data, studentCounter); // loads page with starting info from 0
+        // loads page with starting info from element 0
+        studentInfo(data, studentCounter);
         infoData = data; // stores the data globally
         dataLength = data.students.length - 1; // sets a dynamic number for later use should the array size change
+        startTime();
         }, // end success
       statusCode: {
         404: function(){
@@ -28,6 +30,7 @@ var tempCounter = 0;
   // First time call sets page with first student in array and creates starting divs.
   // Subsequent calls cycle through student array and displays changes.
   var studentInfo = function(info, num){
+    // series of var's to clean up info. Serves no other purpose than readability
     var stuInfo = info.students;
     var first = stuInfo[num].first_name;
     var last = stuInfo[num].last_name;
@@ -53,12 +56,31 @@ var tempCounter = 0;
     countDiv.textContent = countDisplay;
     student.appendChild(countDiv);
     $("body").append(newDiv);
-
-    tempCounter = countDiv; // creates a global element that can be removed later
-    tempStudent = student; // ditto
     };
 
+  // creates a function that cycles through all students in a 10 second interval
+  function startTime(){
+    timer = setInterval(function() {
+      studentCounter++;
+      $(".newDiv").remove();
+      // checks end of array and wraps down to bottom of array if at top
+        if(studentCounter > dataLength){
+          studentCounter = 0;
+          studentInfo(infoData, studentCounter);
+        } // end if
+          else {
+          studentInfo(infoData, studentCounter);
+        } // end else
+    }, totalTime);
+  }
+
+  // creates a function to stop the time interval
+  function stopTimer(){
+      clearInterval(timer);
+  } // end stopTimer
+
   $("#prevBtn").click( function(){
+    stopTimer(); // stops timer to display previous student
     studentCounter--;
     $(".newDiv").remove(); // removes previous element to be replaced by new student and counter
       // checks beginning of array and wraps to top of array if at bottom
@@ -69,9 +91,11 @@ var tempCounter = 0;
       else {
         studentInfo(infoData, studentCounter);
         }
+    startTime(); // restarts timer at 10 seconds
   }); // end PREV
 
   $("#nextBtn").click( function(){
+    stopTimer();
     studentCounter++;
     $(".newDiv").remove();
       // checks end of array and wraps down to bottom of array if at top
@@ -82,16 +106,16 @@ var tempCounter = 0;
       else {
         studentInfo(infoData, studentCounter);
         }
+    startTime();
   }); // end NEXT
 
   // Gets option selected then changes display to output selected student and adjusts counter.
   $("#selectBtn").on("change", function(){
-    studentCounter = parseInt($(this).val()) - 1;
-    console.log(studentCounter);
-    tempStudent.remove();
-    tempCounter.remove();
+    stopTimer();
+    studentCounter = parseInt($(this).val()) - 1; // parses option into a number
+    $(".newDiv").remove();
     studentInfo(infoData, studentCounter);
-    $("#selectBtn").val(0);
+    $("#selectBtn").val(0); // sets select to beginning
+    startTime();
   }); // end select button
-
 }); // document ready
