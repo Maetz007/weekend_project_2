@@ -17,18 +17,20 @@
 
 #prevBtn {
   position: absolute;
-  bottom: 80px;
-  left: 300px;
+  bottom: 200px;
+  margin-left: 30%
 }
 
 #nextBtn {
   position: absolute;
-  bottom: 80px;
-  right: 300px;
+  bottom: 200px;
+  margin-left: 70%;
 }
 
 #selectBtn {
+  position: absolute;
   margin-left: 45%;
+  margin-top: 15%;
 }
 
 .newStudent {
@@ -45,4 +47,5 @@
 .countDiv {
   text-align: center;
   font-size: 20px;
+  padding-top: 20px;
 }
