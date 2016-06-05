@@ -1,0 +1,17 @@
+.buttons {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.countDiv {
+  text-align: center;
+  font-style: oblique;
+  font-size: 20px;
+}
+
+.newStudent {
+  text-align: center;
+  font-size: 30px;
+  font-style: normal;
+  color: #553399;
+}
