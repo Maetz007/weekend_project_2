@@ -25,7 +25,8 @@ var tempCounter = 0;
     }); // end ajax  object
   });
 
-// first time call sets page with first student in array. subsequent calls cycle through student array and displays
+  // First time call sets page with first student in array and creates starting divs.
+  // Subsequent calls cycle through student array and displays changes.
   var studentInfo = function(info, num){
     var stuInfo = info.students;
     var first = stuInfo[num].first_name;
@@ -38,13 +39,15 @@ var tempCounter = 0;
 
     var newDiv = document.createElement("div");
 
-    var student = document.createElement("div"); // creates new student to display on page and appends to div
+    // creates new student to display on page and appends to div named "newDiv"
+    var student = document.createElement("div");
     student.className = "newStudent";
     student.textContent = display;
     newDiv.appendChild(student);
     $("body").append(newDiv);
 
-    var countDiv = document.createElement("div"); // creates updated counter to display on page and appends to student
+    // creates updated counter to display on page and appends to the div "student"
+    var countDiv = document.createElement("div");
     countDiv.className = "countDiv";
     countDiv.textContent = countDisplay;
     student.appendChild(countDiv);
@@ -58,7 +61,7 @@ var tempCounter = 0;
     studentCounter--;
     tempStudent.remove(); // removes previous element to be replaced by new student
     tempCounter.remove(); // ditto except replaces counter display
-    // checks beginning of array an wraps to top of array
+      // checks beginning of array and wraps to top of array if at bottom
       if(studentCounter < 0){
         studentCounter = dataLength;
         studentInfo(infoData, studentCounter);
@@ -72,7 +75,7 @@ var tempCounter = 0;
     studentCounter++;
     tempStudent.remove();
     tempCounter.remove();
-    // checks end of array and wraps down to bottom of array
+      // checks end of array and wraps down to bottom of array if at top
       if(studentCounter > dataLength){
         studentCounter = 0;
         studentInfo(infoData, studentCounter);
@@ -82,6 +85,9 @@ var tempCounter = 0;
         }
   }); // end NEXT
 
+  // Gets option selected then changes display to output selected student and adjusts counter.
+  // At this point, it works, but still working on being able to reselect previous selected student.
+  // Currently doesnt display what was previously selected unless a new change event occurs.
   $("#selectBtn").on("change", function(){
     studentCounter = parseInt($(this).val());
     tempStudent.remove();
