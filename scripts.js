@@ -38,6 +38,7 @@ var tempCounter = 0;
     var countDisplay = "#" + stuNum + "/20";
 
     var newDiv = document.createElement("div");
+    newDiv.className = "newDiv";
 
     // creates new student to display on page and appends to div named "newDiv"
     var student = document.createElement("div");
@@ -59,8 +60,7 @@ var tempCounter = 0;
 
   $("#prevBtn").click( function(){
     studentCounter--;
-    tempStudent.remove(); // removes previous element to be replaced by new student
-    tempCounter.remove(); // ditto except replaces counter display
+    $(".newDiv").remove(); // removes previous element to be replaced by new student and counter
       // checks beginning of array and wraps to top of array if at bottom
       if(studentCounter < 0){
         studentCounter = dataLength;
@@ -73,8 +73,7 @@ var tempCounter = 0;
 
   $("#nextBtn").click( function(){
     studentCounter++;
-    tempStudent.remove();
-    tempCounter.remove();
+    $(".newDiv").remove();
       // checks end of array and wraps down to bottom of array if at top
       if(studentCounter > dataLength){
         studentCounter = 0;
@@ -86,13 +85,13 @@ var tempCounter = 0;
   }); // end NEXT
 
   // Gets option selected then changes display to output selected student and adjusts counter.
-  // At this point, it works, but still working on being able to reselect previous selected student.
-  // Currently doesnt display what was previously selected unless a new change event occurs.
   $("#selectBtn").on("change", function(){
-    studentCounter = parseInt($(this).val());
+    studentCounter = parseInt($(this).val()) - 1;
+    console.log(studentCounter);
     tempStudent.remove();
     tempCounter.remove();
     studentInfo(infoData, studentCounter);
+    $("#selectBtn").val(0);
   }); // end select button
 
 }); // document ready
